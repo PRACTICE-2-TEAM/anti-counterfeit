@@ -9,10 +9,13 @@
    
     <StackLayout VerticalOptions="FillAndExpand">
         <Grid>
-            <Label Text="{Binding EmailText}"
-                   VerticalOptions="Center"/>
+            
             <BoxView BackgroundColor="{StaticResource NavigationPrimary}"
-                     HeightRequest="50"/>
+                     HeightRequest="70"/>
+            <Label Text="{Binding EmailText}"
+                   TextColor="White"
+                   Margin="30,0"
+                   VerticalOptions="Center"/>
         </Grid>
         <ListView x:Name="ListViewMenu"
                     HasUnevenRows="True">
@@ -47,7 +50,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Button Text="{Binding accauntAct}"
+        <Button Text="{Binding AccauntAct}"
                 Command="{Binding LoginOrLogoutAccCommand}"/>
     </StackLayout>
 

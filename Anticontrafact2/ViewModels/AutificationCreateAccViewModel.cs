@@ -24,11 +24,13 @@ namespace Anticontrafact2.ViewModels
 
         private void CreateAcc()
         {
-
+            // Зарегистрировать пользователя в БД
+            // Можно сразуже выполнить вход
+            //User.GetUser().Email = "Email@my.com";// Так задаем email. User - Singleton класс
         }
         private async void ToLoginPage()
         {
-            await page.Navigation.PopModalAsync();
+            await page.Navigation.PopAsync(false);
         }
     }
 }

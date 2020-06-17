@@ -1,4 +1,5 @@
-﻿using Anticontrafact2.Views;
+﻿using Anticontrafact2.Models;
+using Anticontrafact2.Views;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,11 +27,16 @@ namespace Anticontrafact2.ViewModels
         private void LogIn()
         {
             // Если норм пароль
-            //Application.Current.MainPage
+            User.GetUser().Email = "Email@my.com";// Так задаем email. User - Singleton класс
+            // изменение свойства email достаточно, остольное я привизал 
+            //Если не норм 
+            page.DisplayAlert("", User.GetUser().Email+" \nislogin:"+ User.GetUser().IsLogin, "OK");//Так выводим сообщение
+            
+
         }
         private async void ToCreateAccPage()
         {
-            await page.Navigation.PushModalAsync(new AutificationCreateAccPage());
+            await page.Navigation.PushAsync(new AutificationCreateAccPage(),false);
         }
     }
     

@@ -1,7 +1,9 @@
-﻿using Anticontrafact2.Views;
+﻿using Anticontrafact2.Models;
+using Anticontrafact2.Views;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -10,29 +12,58 @@ namespace Anticontrafact2.ViewModels
     class MenuViewModel : BaseViewModel
     {
         MenuPage page;
-        MainPage RootPage;
         public MenuViewModel(MenuPage page)
         {
 
             this.page = page;
-            RootPage = Application.Current.MainPage as MainPage;
             LoginOrLogoutAccCommand = new Command(LoginOrLogoutAcc);
+
+            AccauntAct = "Войти в аккаунт";
+            EmailText = "Войдите в аккаунт";
         }
 
         public ICommand LoginOrLogoutAccCommand { get; }
 
+        public string AccauntAct { get; set; }
+        public string EmailText { get; set; }
+
         private async void LoginOrLogoutAcc()
         {
-            //if(RootPage.User.IsLogin)
-            if(false)
+            
+            if (User.GetUser().IsLogin)
             {
-                page.accauntAct = "Выйти из акаунта";
-                RootPage.User.Email = null;
+                User.GetUser().IsLogin = false;
+                AccauntAct = "Войти в аккаунт";
+                EmailText = "Войдите в аккаунт";
+
             }
-            else
+            else//Крайне сомнительный способ
             {
-                await page.Navigation.PushModalAsync(new NavigationPage(new AutificationLoginPage()));
+                //AutificationLoginPage loginDialog = new AutificationLoginPage();
+                NavigationPage loginDialog = new NavigationPage(new AutificationLoginPage());
+                await page.Navigation.PushModalAsync(loginDialog);
+                await Task.Run(()=>WaitCloseLoginDialog(loginDialog));
             }
+
+
+            if(User.GetUser().IsLogin)
+            {
+                AccauntAct = "Выйти из аккаунта";
+                EmailText = User.GetUser().Email;
+            }
+            OnPropertyChanged(nameof(AccauntAct));
+            OnPropertyChanged(nameof(EmailText));
+        }
+        private void WaitCloseLoginDialog(NavigationPage loginDialog)
+        {
+            while(true)
+            {
+                if(loginDialog.Navigation.ModalStack.Count==0)
+                {
+                    break;
+                }
+            }
+
         }
     }
 }

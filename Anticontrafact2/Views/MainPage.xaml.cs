@@ -15,13 +15,12 @@ namespace Anticontrafact2.Views
     public partial class MainPage : MasterDetailPage
     {
         Dictionary<int, NavigationPage> MenuPages = new Dictionary<int, NavigationPage>();
-        public User User;
+       
         public MainPage()
         {
             InitializeComponent();
 
             MasterBehavior = MasterBehavior.Popover;
-            User = new User();
 
             MenuPages.Add((int)MenuItemType.Browse, (NavigationPage)Detail);
         }

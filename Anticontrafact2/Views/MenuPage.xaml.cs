@@ -17,12 +17,14 @@ namespace Anticontrafact2.Views
         List<HomeMenuItem> menuItems;
         List<HomeMenuItem> MenuAccActs;
 
-        public string accauntAct = "Войти в аккаунт";
+        
         public MenuPage()
         {
             InitializeComponent();
             BindingContext = new MenuViewModel(this);
-            
+
+           
+
             menuItems = new List<HomeMenuItem>
             {
                 new HomeMenuItem {Id = MenuItemType.Browse, Title="Browse" },
@@ -61,5 +63,6 @@ namespace Anticontrafact2.Views
                 await RootPage.NavigateFromMenu(id);
             };
         }
+
     }
 }
