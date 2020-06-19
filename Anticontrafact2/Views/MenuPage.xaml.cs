@@ -3,6 +3,7 @@ using Anticontrafact2.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Security.Cryptography.X509Certificates;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -15,7 +16,6 @@ namespace Anticontrafact2.Views
     {
         MainPage RootPage { get => Application.Current.MainPage as MainPage; }
         List<HomeMenuItem> menuItems;
-        List<HomeMenuItem> MenuAccActs;
 
         
         public MenuPage()
@@ -27,7 +27,6 @@ namespace Anticontrafact2.Views
 
             menuItems = new List<HomeMenuItem>
             {
-                new HomeMenuItem {Id = MenuItemType.Browse, Title="Browse" },
                 new HomeMenuItem {Id = MenuItemType.CheckGood, Title="Проверить товар" },
                 new HomeMenuItem {Id = MenuItemType.CheckShop, Title="Проверить точку" },
                 new HomeMenuItem {Id = MenuItemType.ReportOnGood, Title="Пожаловаться на товар" },
@@ -46,22 +45,25 @@ namespace Anticontrafact2.Views
                 await RootPage.NavigateFromMenu(id);
             };
 
-            MenuAccActs = new List<HomeMenuItem>
+            
+            ChangeShowReportsStatusButtonVisible();
+        }
+        //TODO Это кастыли, мне не нравится...
+        public void ResetSelectedItem()
+        {
+            ListViewMenu.SelectedItem = null;
+        }
+        public void ChangeShowReportsStatusButtonVisible()
+        {
+            if (User.GetUser().IsLogin)
             {
-                new HomeMenuItem {Id = MenuItemType.ReportsStatus, Title="Статус текущих жалоб" },
-            };
-
-            ListViewMenuAccActs.ItemsSource = MenuAccActs;
-
-
-            ListViewMenuAccActs.ItemSelected += async (sender, e) =>
+                ShowReportsStatusButton.IsVisible = true;
+            }
+            else
             {
-                if (e.SelectedItem == null)
-                    return;
-
-                var id = (int)((HomeMenuItem)e.SelectedItem).Id;
-                await RootPage.NavigateFromMenu(id);
-            };
+                ShowReportsStatusButton.IsVisible = false;
+                ListViewMenu.SelectedItem = menuItems[0];
+            }
         }
 
     }

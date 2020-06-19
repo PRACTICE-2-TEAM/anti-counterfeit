@@ -6,7 +6,6 @@ namespace Anticontrafact2.Models
 {
     public enum MenuItemType
     {
-        Browse,
         CheckGood,
         CheckShop,
         ReportOnGood,

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Anticontrafact2.Models;
+using Anticontrafact2.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +17,18 @@ namespace Anticontrafact2.Views
         public ReportsStatusPage()
         {
             InitializeComponent();
+
+            BindingContext = new ReportStatusViewModel();
+        }
+
+        async void OnItemSelected(object sender, EventArgs args)
+        {
+            var layout = (BindableObject)sender;
+            var item = (Report)layout.BindingContext;
+
+            await DisplayAlert(item.Inform, item.Description, "Ok");
+            
+            //await Navigation.PushAsync(new ItemDetailPage(new ItemDetailViewModel(item)));
         }
     }
 }

@@ -45,6 +45,8 @@ namespace Anticontrafact2.Models
             }
         }
 
+        public string Password { get; set; }
+
         public static User GetUser()
         {
             if (instance == null)

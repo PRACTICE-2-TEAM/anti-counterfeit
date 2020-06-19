@@ -25,7 +25,7 @@
                     <x:String>Item 2</x:String>
                 </x:Array>
             </d:ListView.ItemsSource>-->
-            
+
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -36,22 +36,17 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <ListView x:Name="ListViewMenuAccActs"
-                  VerticalOptions="End"
-                  BackgroundColor="Black"
-                  HeightRequest="70">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <Grid Padding="10">
-                            <Label Text="{Binding Title}" d:Text="{Binding .}" FontSize="20"/>
-                        </Grid>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <Button x:Name="ShowReportsStatusButton"
+                Text="Показать статус заявок"
+                Command="{Binding ShowReportsStatusCommand}"
+                BackgroundColor="White"
+                TextColor="Black"/>
         <Button Text="{Binding AccauntAct}"
-                Command="{Binding LoginOrLogoutAccCommand}"/>
+                Command="{Binding LoginOrLogoutAccCommand}"
+                BackgroundColor="White"
+                BorderColor="Gray"
+                BorderWidth="1"
+                TextColor="Black"/>
     </StackLayout>
 
 </ContentPage>

@@ -28,7 +28,8 @@ namespace Anticontrafact2.ViewModels
         {
             // Если норм пароль
             User.GetUser().Email = "Email@my.com";// Так задаем email. User - Singleton класс
-            // изменение свойства email достаточно, остольное я привизал 
+            User.GetUser().Password = "123456";// Так задаем email. User - Singleton класс
+            // У пользователя нужно изменить
             //Если не норм 
             page.DisplayAlert("", User.GetUser().Email+" \nislogin:"+ User.GetUser().IsLogin, "OK");//Так выводим сообщение
             

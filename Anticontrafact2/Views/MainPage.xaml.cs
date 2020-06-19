@@ -22,7 +22,7 @@ namespace Anticontrafact2.Views
 
             MasterBehavior = MasterBehavior.Popover;
 
-            MenuPages.Add((int)MenuItemType.Browse, (NavigationPage)Detail);
+            MenuPages.Add((int)MenuItemType.CheckGood, (NavigationPage)Detail);
         }
 
         public async Task NavigateFromMenu(int id)
@@ -31,9 +31,6 @@ namespace Anticontrafact2.Views
             {
                 switch (id)
                 {
-                    case (int)MenuItemType.Browse:
-                        MenuPages.Add(id, new NavigationPage(new ItemsPage()));
-                        break;
                     case (int)MenuItemType.CheckGood:
                         MenuPages.Add(id, new NavigationPage(new CheckGoodPage()));
                         break;
