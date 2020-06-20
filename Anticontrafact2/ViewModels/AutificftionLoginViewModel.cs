@@ -1,4 +1,5 @@
-﻿using Anticontrafact2.Models;
+﻿using Anticontrafact2.Api;
+using Anticontrafact2.Models;
 using Anticontrafact2.Views;
 using System;
 using System.Collections.Generic;
@@ -24,16 +25,28 @@ namespace Anticontrafact2.ViewModels
 
         public string Password { get; set; }
         public string UserName { get; set; }
-        private void LogIn()
+        private async void LogIn()
         {
-            // Если норм пароль
-            User.GetUser().Email = "Email@my.com";// Так задаем email. User - Singleton класс
-            User.GetUser().Password = "123456";// Так задаем email. User - Singleton класс
-            // У пользователя нужно изменить
-            //Если не норм 
-            page.DisplayAlert("", User.GetUser().Email+" \nislogin:"+ User.GetUser().IsLogin, "OK");//Так выводим сообщение
-            
+            // shortcut
+            IAntiCounterfeitApi Api = AntiCounterfeitApiService.getInstance().Api;
 
+            // Авторизуем пользователя
+            LogInInfo logInInfo = await Api.LogIn(UserName, Password);
+            string token = logInInfo.Token;
+            await page.DisplayAlert("Debug",
+                "UserName = " + UserName +
+                ", Password = " + Password +
+                ", token = " + token,
+                "OK");
+            // Проверяем ответ от сервера
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                await page.DisplayAlert("", "Пользователь с указанными данными не существует", "OK");
+                return;
+            }
+            // Запоминаем адрес электронной почты и токен
+            User.GetUser().Email = UserName;
+            User.GetUser().Token = token;
         }
         private async void ToCreateAccPage()
         {
