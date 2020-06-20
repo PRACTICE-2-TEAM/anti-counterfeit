@@ -38,7 +38,7 @@ namespace Anticontrafact2.Api
         /// <param name="pass">пароль</param>
         /// <param name="code">код подтверждения</param>
         /// <returns>результат регистрации</returns>
-        [Post("/registration")]
+        [Get("/registration")]
         Task<RegistrationInfo> Register(string email, string pass, string code);
 
         /// <summary>
