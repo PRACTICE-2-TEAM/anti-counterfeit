@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace Anticontrafact2.ViewModels
 {
-    class AutificftionLoginViewModel:BaseViewModel
+    class AutificftionLoginViewModel : BaseViewModel
     {
         AutificationLoginPage page;
         public AutificftionLoginViewModel(AutificationLoginPage page)
@@ -27,31 +27,28 @@ namespace Anticontrafact2.ViewModels
         public string UserName { get; set; }
         private async void LogIn()
         {
-            // shortcut
-            IAntiCounterfeitApi Api = AntiCounterfeitApiService.getInstance().Api;
-
-            // Авторизуем пользователя
-            LogInInfo logInInfo = await Api.LogIn(UserName, Password);
-            string token = logInInfo.Token;
-            await page.DisplayAlert("Debug",
-                "UserName = " + UserName +
-                ", Password = " + Password +
-                ", token = " + token,
-                "OK");
-            // Проверяем ответ от сервера
-            if (string.IsNullOrWhiteSpace(token))
+            // Валидация полей
+            if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password))
             {
-                await page.DisplayAlert("", "Пользователь с указанными данными не существует", "OK");
+                await page.DisplayAlert(null, "Заполните все текстовые поля", "Принять");
                 return;
             }
-            // Запоминаем адрес электронной почты и токен
+
+            // Авторизация
+            var api = AntiCounterfeitApiService.getInstance().Api;
+            var logInInfo = await api.LogIn(UserName, Password);
+            if (string.IsNullOrEmpty(logInInfo.Token))
+            {
+                await page.DisplayAlert(null, "Пользователь с указанными данными не существует", "Принять");
+                return;
+            }
             User.GetUser().Email = UserName;
-            User.GetUser().Token = token;
+            User.GetUser().Token = logInInfo.Token;
         }
         private async void ToCreateAccPage()
         {
-            await page.Navigation.PushAsync(new AutificationCreateAccPage(),false);
+            await page.Navigation.PushAsync(new AutificationCreateAccPage(), false);
         }
     }
-    
+
 }

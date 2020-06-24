@@ -5,49 +5,25 @@ namespace Anticontrafact2.Api
 {
     public interface IAntiCounterfeitApi
     {
-        /// <summary>
-        /// Проверяет товар по указанному штрих-коду.
-        /// </summary>
-        /// <param name="barcode">номер штрих-кода</param>
-        /// <returns>результат проверки</returns>
         [Get("/check_barcode")]
-        Task<BarcodeInfo> CheckBarcode(string barcode);
+        Task<ProductInformation> GetProductInformation([AliasAs("barcode")] string barcode);
 
-        /// <summary>
-        /// Проверяет торговую точку по указанному ИНН.
-        /// </summary>
-        /// <param name="tin">ИНН</param>
-        /// <returns>результат проверки</returns>
         [Get("/check_outlet")]
-        Task<OutletInfo> CheckOutlet(string tin);
+        Task<OutletInformation> GetOutletInformation([AliasAs("tin")] string tin);
 
-        /// <summary>
-        /// Запрашивает у сервера отправку на указанный адрес
-        /// электронной почты кода подтверждения для завершения
-        /// регистрации.
-        /// </summary>
-        /// <param name="email">адрес электронной почты</param>
-        /// <returns>результат запроса</returns>
         [Get("/sign_up")]
-        Task<SignUpInfo> SignUp(string email);
+        Task<SignUpResult> RequestCode([AliasAs("email")] string email);
 
-        /// <summary>
-        /// Отправляет на сервер данные для завершения регистрации.
-        /// </summary>
-        /// <param name="email">адрес электронной почты</param>
-        /// <param name="pass">пароль</param>
-        /// <param name="code">код подтверждения</param>
-        /// <returns>результат регистрации</returns>
         [Get("/registration")]
-        Task<RegistrationInfo> Register(string email, string pass, string code);
+        Task<RegistrationInfo> SignUp([AliasAs("email")] string email, [AliasAs("pass")] string password, [AliasAs("code")] string code);
 
-        /// <summary>
-        /// Запрос на авторизацию.
-        /// </summary>
-        /// <param name="email">адрес электронной почты</param>
-        /// <param name="pass"></param>
-        /// <returns>токен</returns>
         [Get("/login")]
-        Task<LogInInfo> LogIn(string email, string pass);
+        Task<LogInResult> LogIn([AliasAs("email")] string email, [AliasAs("pass")] string password);
+
+        // TODO:
+        //  - /complain_outlet
+        //  - /complain_product
+        //  - /get_outlet_complaints
+        //  - /get_product_complaints
     }
 }

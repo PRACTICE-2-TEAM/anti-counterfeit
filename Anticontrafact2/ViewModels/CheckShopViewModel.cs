@@ -22,17 +22,19 @@ namespace Anticontrafact2.ViewModels
         //TODO Добвавить команду открыть сканер сканера
         public string INNNumber { get; set; }
 
-
         private async void CheckShop()
         {
-            // Если поле с ИНН не пустое, ...
-            if (!string.IsNullOrWhiteSpace(INNNumber))
+            // Валидация введенных значений
+            if (string.IsNullOrEmpty(INNNumber))
             {
-                // то запрашиваем данные у сервера ...
-                OutletInfo outletInfo = await AntiCounterfeitApiService.getInstance().Api.CheckOutlet(INNNumber);
-                // и выводим результат на экран.
-                await page.DisplayAlert("", outletInfo.Result, "OK");
+                await page.DisplayAlert(null, "Введите ИНН в текстовое поле", "Принять");
+                return;
             }
+
+            // Проверка
+            var api = AntiCounterfeitApiService.getInstance().Api;
+            var outletInfo = await api.GetOutletInformation(INNNumber);
+            await page.DisplayAlert(null, outletInfo.Result, "Принять");
         }
     }
 }

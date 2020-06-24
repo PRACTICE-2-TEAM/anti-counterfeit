@@ -28,54 +28,43 @@ namespace Anticontrafact2.ViewModels
 
         private async void CreateAcc()
         {
-            // shortcut
-            IAntiCounterfeitApi Api = AntiCounterfeitApiService.getInstance().Api;
-
-            // Проверяем все ли поля заполнены
-            if (string.IsNullOrEmpty(UserName) ||
-                string.IsNullOrEmpty(Password) ||
-                string.IsNullOrEmpty(DoublePassword))
+            // Валидация введенных значений
+            if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password) || string.IsNullOrEmpty(DoublePassword))
             {
-                await page.DisplayAlert("", "Заполните все поля", "OK");
+                await page.DisplayAlert(null, "Заполните текстовые все поля", "Принять");
                 return;
             }
-            // Проверяем совпадают ли пароли
             if (!Password.Equals(DoublePassword))
             {
-                await page.DisplayAlert("", "Пароли не совпадают", "OK");
+                await page.DisplayAlert("", "Указанные вами пароли не совпадают", "Принять");
                 return;
             }
-            // Посылаем первый запрос для отправки на почту кода подтверждения
-            SignUpInfo signUpInfo = await Api.SignUp(UserName);
-            // Проверяем успешно ли прошла операция
+
+            // Регистрация пользователя
+            var api = AntiCounterfeitApiService.getInstance().Api;
+            var signUpInfo = await api.RequestCode(UserName);
             if (!signUpInfo.Success)
             {
-                await page.DisplayAlert("", signUpInfo.Reason, "OK");
+                await page.DisplayAlert("", signUpInfo.Reason, "Принять");
                 return;
             }
-            // Код пришел пользователю на почту, показываем диалоговое окно для ввода кода подтверждения
-            string code = await page.DisplayPromptAsync("", "Код подтверждения");
-            // Посылаем второй запрос на сервер для завершения регистрации
-            RegistrationInfo registrationInfo = await Api.Register(UserName, Password, code);
-            // Проверяем успешно ли прошла операция
+            var code = await page.DisplayPromptAsync("", "Введите код подтверждения, отправленный на указанный вами адрес электронной почты");
+            var registrationInfo = await api.SignUp(UserName, Password, code);
             if (!registrationInfo.Success)
             {
-                await page.DisplayAlert("", registrationInfo.Reason, "OK");
+                await page.DisplayAlert("", registrationInfo.Reason, "Принять");
                 return;
             }
-            // Операция прошла успешно, пользователь зарегистрирован
-            // Теперь авторизуем его
-            LogInInfo logInInfo = await Api.LogIn(UserName, Password);
-            string token = logInInfo.Token;
-            // Проверяем ответ от сервера
-            if (string.IsNullOrWhiteSpace(token))
+
+            // Авторизация
+            var logInInfo = await api.LogIn(UserName, Password);
+            if (string.IsNullOrEmpty(logInInfo.Token))
             {
-                await page.DisplayAlert("", "Пользователь с указанными данными не существует", "OK");
+                await page.DisplayAlert("", "Пользователь с указанными данными не существует", "Принять");
                 return;
             }
-            // Запоминаем адрес электронной почты и токен
             User.GetUser().Email = UserName;
-            User.GetUser().Token = token;
+            User.GetUser().Token = logInInfo.Token;
         }
 
         private async void ToLoginPage()

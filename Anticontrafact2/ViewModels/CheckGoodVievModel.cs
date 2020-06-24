@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace Anticontrafact2.ViewModels
 {
-    class CheckGoodVievModel:BaseViewModel
+    class CheckGoodVievModel : BaseViewModel
     {
         CheckGoodPage page;
 
@@ -23,16 +23,19 @@ namespace Anticontrafact2.ViewModels
 
         private async void CheckGood()
         {
-            // Если поле с номером штрих-кода не пустое, ...
-            if (!string.IsNullOrWhiteSpace(CodeNumber))
+            // Валидация введенных значений
+            if (string.IsNullOrWhiteSpace(CodeNumber))
             {
-                // то запрашиваем данные у сервера ...
-                BarcodeInfo barcodeInfo = await AntiCounterfeitApiService.getInstance().Api.CheckBarcode(CodeNumber);
-                // и выводим результат на экран.
-                await page.DisplayAlert("", barcodeInfo.Result, "OK");
+                await page.DisplayAlert(null, "Введите номер штрих-кода в текстовое поле", "Принять");
+                return;
             }
+
+            // Проверка
+            var api = AntiCounterfeitApiService.getInstance().Api;
+            var barcodeInfo = await api.GetProductInformation(CodeNumber);
+            await page.DisplayAlert(null, barcodeInfo.Result, "Принять");
         }
-        
+
         private void ScanCode()
         {
         }
