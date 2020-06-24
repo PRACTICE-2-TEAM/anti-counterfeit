@@ -1,6 +1,8 @@
-﻿using Anticontrafact2.Views;
+﻿using Anticontrafact2.Api;
+using Anticontrafact2.Views;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -23,12 +25,14 @@ namespace Anticontrafact2.ViewModels
 
         private async void CheckShop()
         {
-            await page.DisplayAlert("", "Button work\n code number - " + INNNumber, "OK");
+            // Если поле с ИНН не пустое, ...
+            if (!string.IsNullOrWhiteSpace(INNNumber))
+            {
+                // то запрашиваем данные у сервера ...
+                OutletInfo outletInfo = await AntiCounterfeitApiService.getInstance().Api.CheckOutlet(INNNumber);
+                // и выводим результат на экран.
+                await page.DisplayAlert("", outletInfo.Result, "OK");
+            }
         }
-
     }
-
-
-
-
 }

@@ -47,6 +47,9 @@ namespace Anticontrafact2.Models
 
         public string Password { get; set; }
 
+        // токен
+        public string Token { get; set; }
+
         public static User GetUser()
         {
             if (instance == null)
