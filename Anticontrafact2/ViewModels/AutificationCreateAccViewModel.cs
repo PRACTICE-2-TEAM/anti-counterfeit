@@ -48,7 +48,11 @@ namespace Anticontrafact2.ViewModels
                 await page.DisplayAlert("", signUpInfo.Reason, "Принять");
                 return;
             }
-            var code = await page.DisplayPromptAsync("", "Введите код подтверждения, отправленный на указанный вами адрес электронной почты");
+            var code = await page.DisplayPromptAsync("", "Введите код подтверждения, отправленный на указанный вами адрес электронной почты", "Принять", "Отмена");
+            if (string.IsNullOrEmpty(code))
+            {
+                return;
+            }
             var registrationInfo = await api.SignUp(UserName, Password, code);
             if (!registrationInfo.Success)
             {
