@@ -45,25 +45,11 @@ namespace Anticontrafact2.Views
                 await RootPage.NavigateFromMenu(id);
             };
 
-            
-            ChangeShowReportsStatusButtonVisible();
         }
         //TODO Это кастыли, мне не нравится...
         public void ResetSelectedItem()
         {
             ListViewMenu.SelectedItem = null;
-        }
-        public void ChangeShowReportsStatusButtonVisible()
-        {
-            if (User.GetUser().IsLogin)
-            {
-                ShowReportsStatusButton.IsVisible = true;
-            }
-            else
-            {
-                ShowReportsStatusButton.IsVisible = false;
-                ListViewMenu.SelectedItem = menuItems[0];
-            }
         }
 
     }

@@ -65,11 +65,16 @@ namespace Anticontrafact2.ViewModels
             }
             User.GetUser().Email = UserName;
             User.GetUser().Token = logInInfo.Token;
+            ToMainMenu();
         }
 
         private async void ToLoginPage()
         {
             await page.Navigation.PopAsync(false);
+        }
+        private void ToMainMenu()
+        {
+            Application.Current.MainPage = new MainPage();
         }
     }
 }

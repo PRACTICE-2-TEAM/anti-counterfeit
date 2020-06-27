@@ -21,8 +21,8 @@ namespace Anticontrafact2.ViewModels
             LoginOrLogoutAccCommand = new Command(LoginOrLogoutAcc);
             ShowReportsStatusCommand = new Command(ShowReportsStatus);
 
-            AccauntAct = "Войти в аккаунт";
-            EmailText = "Войдите в аккаунт";
+            AccauntAct = "Выйти из аккаунта";
+            EmailText = User.GetUser().Email;
         }
 
         public ICommand LoginOrLogoutAccCommand { get; }
@@ -36,46 +36,9 @@ namespace Anticontrafact2.ViewModels
             await RootPage.NavigateFromMenu((int)MenuItemType.ReportsStatus);
             page.ResetSelectedItem();
         }
-        private async void LoginOrLogoutAcc()
+        private void LoginOrLogoutAcc()
         {
-            
-            if (User.GetUser().IsLogin)
-            {
-                User.GetUser().IsLogin = false;
-                AccauntAct = "Войти в аккаунт";
-                EmailText = "Войдите в аккаунт";
-
-
-
-            }
-            else//Крайне сомнительный способ
-            {
-                //AutificationLoginPage loginDialog = new AutificationLoginPage();
-                NavigationPage loginDialog = new NavigationPage(new AutificationLoginPage());
-                await page.Navigation.PushModalAsync(loginDialog);
-                await Task.Run(()=>WaitCloseLoginDialog(loginDialog));
-            }
-
-
-            if(User.GetUser().IsLogin)
-            {
-                AccauntAct = "Выйти из аккаунта";
-                EmailText = User.GetUser().Email;
-            }
-            page.ChangeShowReportsStatusButtonVisible();
-            OnPropertyChanged(nameof(AccauntAct));
-            OnPropertyChanged(nameof(EmailText));
-        }
-        private void WaitCloseLoginDialog(NavigationPage loginDialog)
-        {
-            while(true)
-            {
-                if(loginDialog.Navigation.ModalStack.Count==0)
-                {
-                    break;
-                }
-            }
-
+            Application.Current.MainPage = new NavigationPage(new AutificationLoginPage());
         }
     }
 }
