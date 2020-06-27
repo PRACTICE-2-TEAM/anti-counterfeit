@@ -31,7 +31,7 @@ namespace Anticontrafact2.ViewModels
             // Валидация введенных значений
             if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password) || string.IsNullOrEmpty(DoublePassword))
             {
-                await page.DisplayAlert(null, "Заполните текстовые все поля", "Принять");
+                await page.DisplayAlert(null, "Заполните все текстовые поля", "Принять");
                 return;
             }
             if (!Password.Equals(DoublePassword))

@@ -1,4 +1,6 @@
-﻿using Anticontrafact2.Views;
+﻿using Anticontrafact2.Api;
+using Anticontrafact2.Models;
+using Anticontrafact2.Views;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -27,13 +29,37 @@ namespace Anticontrafact2.ViewModels
 
         private void ScanCode()
         {
-
         }
+
         private async void SendReport()
         {
-            await page.DisplayAlert("", "data:\n" + ProductName + " " + CodeNumber + " " + CauseDiscriptionText, "OK");
+            // Валидация введенных значений
+            if (string.IsNullOrEmpty(ProductName) || string.IsNullOrEmpty(CodeNumber) || string.IsNullOrEmpty(CauseDiscriptionText))
+            {
+                await page.DisplayAlert(null, "Заполните текстовые все поля", "Принять");
+                return;
+            }
+
+            // Формируем заявку
+            var data = new ComplaintOutputData
+            {
+                Token = User.GetUser().Token,
+                Description = CauseDiscriptionText,
+                Address = "",
+                Unit = "",
+                Type = "product",
+                Status = "В обработке"
+            };
+
+            // Отправка жалобы
+            var api = AntiCounterfeitApiService.getInstance().Api;
+            var complaintResult = await api.Complain(data);
+            if (!complaintResult.Success)
+            {
+                await page.DisplayAlert(null, complaintResult.Reason, "Принять");
+                return;
+            }
+            await page.DisplayAlert(null, "Ваша заявка принята для обработки", "Принять");
         }
-
-
     }
 }

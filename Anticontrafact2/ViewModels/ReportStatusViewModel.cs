@@ -1,4 +1,5 @@
-﻿using Anticontrafact2.Models;
+﻿using Anticontrafact2.Api;
+using Anticontrafact2.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,7 +8,7 @@ using Xamarin.Forms;
 
 namespace Anticontrafact2.ViewModels
 {
-    public class ReportStatusViewModel:BaseViewModel
+    public class ReportStatusViewModel : BaseViewModel
     {
         public ObservableCollection<Report> Reports { get; set; }
         public Command LoadReportsCommand { get; set; }
@@ -19,31 +20,57 @@ namespace Anticontrafact2.ViewModels
             LoadReports();
         }
 
-        private void LoadReports()//TODO Тому кто будет соединять с API Нужно изменить только этот метод
+        private async void LoadReports()
         {
-            
-            int i = 0;
-            while (i < 3)// Считываем все объекты и задаем для них соответсвующие свойства
+            Reports.Clear();
+
+            string token = User.GetUser().Token;
+            var api = AntiCounterfeitApiService.getInstance().Api;
+            var identifiers = await api.GetComplaintIdentifiers(token, 100, 1);
+            foreach (var identifier in identifiers)
             {
-                Reports.Add(new Report()
+                var data = await api.GetComplaintData(token, identifier.Id);
+                if (data.Type == "product")
                 {
-                    TitleName = i.ToString(),// Название товара\магазина
-                    Address = i.ToString() + "addr",//Адресс при наличии разумеется
-                    Number = i.ToString() + i.ToString(),//ИНН или что там в форме
-                    State = ReportStatus.inProcessing,// Статус заявки
-
-                    Description = "This is Description"//Описание которое появляется при нажатии на элемент
-                }) ;
-                i++;
+                    Reports.Add(new Report {
+                        TitleName = "Товар",
+                        State = data.Status == "В обработке" ? ReportStatus.inProcessing : ReportStatus.ready,
+                        Description = data.Description
+                    });
+                }
+                else if (data.Type == "sale-point")
+                {
+                    Reports.Add(new Report
+                    {
+                        TitleName = "Торговая точка",
+                        Address = data.Address,
+                        State = data.Status == "В обработке" ? ReportStatus.inProcessing : ReportStatus.ready,
+                        Description = data.Description
+                    });
+                }
             }
-            Reports.Add(new Report()
-            {
-                TitleName = "Test without adress",
-                Number = "77777",
-                State = ReportStatus.ready,
+            //int i = 0;
+            //while (i < 3)// Считываем все объекты и задаем для них соответсвующие свойства
+            //{
+            //    Reports.Add(new Report()
+            //    {
+            //        TitleName = i.ToString(),// Название товара\магазина
+            //        Address = i.ToString() + "addr",//Адресс при наличии разумеется
+            //        Number = i.ToString() + i.ToString(),//ИНН или что там в форме
+            //        State = ReportStatus.inProcessing,// Статус заявки
 
-                Description = "This is Description"
-            });
+            //        Description = "This is Description"//Описание которое появляется при нажатии на элемент
+            //    });
+            //    i++;
+            //}
+            //Reports.Add(new Report()
+            //{
+            //    TitleName = "Test without adress",
+            //    Number = "77777",
+            //    State = ReportStatus.ready,
+
+            //    Description = "This is Description"
+            //});
         }
     }
 }
