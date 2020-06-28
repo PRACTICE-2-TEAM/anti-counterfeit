@@ -1,5 +1,6 @@
 ﻿using Anticontrafact2.Api;
 using Anticontrafact2.Models;
+using Anticontrafact2.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,6 +12,7 @@ namespace Anticontrafact2.ViewModels
 {
     public class ReportStatusViewModel : BaseViewModel
     {
+        ReportsStatusPage page;
         public ObservableCollection<Report> Reports { get; set; }
         public Command LoadReportsCommand { get; set; }
         public ReportStatusViewModel()
@@ -24,10 +26,18 @@ namespace Anticontrafact2.ViewModels
         private async Task LoadReports()
         {
             IsBusy = true;
+            
+            // Проверяем доступно ли API
+            if (!AntiCounterfeitApiService.getInstance().IsAvailable())
+            {
+                await page.DisplayAlert(null, "Нет подключения к сети", "Принять");
+                return;
+            }
+            var api = AntiCounterfeitApiService.getInstance().Api;
+
             Reports.Clear();
 
             string token = User.GetUser().Token;
-            var api = AntiCounterfeitApiService.getInstance().Api;
             var identifiers = await api.GetComplaintIdentifiers(token, 100, 1);
             foreach (var identifier in identifiers)
             {

@@ -1,9 +1,5 @@
 ﻿using Anticontrafact2.Api;
 using Anticontrafact2.Views;
-using System;
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 
@@ -24,6 +20,14 @@ namespace Anticontrafact2.ViewModels
 
         private async void CheckShop()
         {
+            // Проверяем доступно ли API
+            if (!AntiCounterfeitApiService.getInstance().IsAvailable())
+            {
+                await page.DisplayAlert(null, "Нет подключения к сети", "Принять");
+                return;
+            }
+            var api = AntiCounterfeitApiService.getInstance().Api;
+
             // Валидация введенных значений
             if (string.IsNullOrEmpty(INNNumber))
             {
@@ -32,7 +36,6 @@ namespace Anticontrafact2.ViewModels
             }
 
             // Проверка
-            var api = AntiCounterfeitApiService.getInstance().Api;
             var outletInfo = await api.GetOutletInformation(INNNumber);
             await page.DisplayAlert(null, outletInfo.Result, "Принять");
         }

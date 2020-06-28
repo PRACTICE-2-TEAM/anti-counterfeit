@@ -27,6 +27,14 @@ namespace Anticontrafact2.ViewModels
         public string UserName { get; set; }
         private async void LogIn()
         {
+            // Проверяем доступно ли API
+            if (!AntiCounterfeitApiService.getInstance().IsAvailable())
+            {
+                await page.DisplayAlert(null, "Нет подключения к сети", "Принять");
+                return;
+            }
+            var api = AntiCounterfeitApiService.getInstance().Api;
+
             // Валидация полей
             if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password))
             {
@@ -35,7 +43,6 @@ namespace Anticontrafact2.ViewModels
             }
 
             // Авторизация
-            var api = AntiCounterfeitApiService.getInstance().Api;
             var logInInfo = await api.LogIn(UserName, Password);
             if (string.IsNullOrEmpty(logInInfo.Token))
             {
