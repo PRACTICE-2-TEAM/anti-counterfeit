@@ -1,4 +1,5 @@
 ﻿using Refit;
+using System.Net;
 
 namespace Anticontrafact2.Api
 {
@@ -21,5 +22,23 @@ namespace Anticontrafact2.Api
         }
 
         public IAntiCounterfeitApi Api { get; }
+
+        public bool IsAvailable()
+        {
+            try
+            {
+                using (var webClient = new WebClient())
+                {
+                    using (webClient.OpenRead("http://godnext-001-site1.btempurl.com"))
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

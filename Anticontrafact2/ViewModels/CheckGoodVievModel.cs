@@ -23,6 +23,14 @@ namespace Anticontrafact2.ViewModels
 
         private async void CheckGood()
         {
+            // Проверяем доступно ли API
+            if (!AntiCounterfeitApiService.getInstance().IsAvailable())
+            {
+                await page.DisplayAlert(null, "Нет подключения к сети", "Принять");
+                return;
+            }
+            var api = AntiCounterfeitApiService.getInstance().Api;
+
             // Валидация введенных значений
             if (string.IsNullOrWhiteSpace(CodeNumber))
             {
@@ -31,7 +39,6 @@ namespace Anticontrafact2.ViewModels
             }
 
             // Проверка
-            var api = AntiCounterfeitApiService.getInstance().Api;
             var barcodeInfo = await api.GetProductInformation(CodeNumber);
             await page.DisplayAlert(null, barcodeInfo.Result, "Принять");
         }

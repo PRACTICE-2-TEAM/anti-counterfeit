@@ -33,6 +33,14 @@ namespace Anticontrafact2.ViewModels
 
         private async void SendReport()
         {
+            // Проверяем доступно ли API
+            if (!AntiCounterfeitApiService.getInstance().IsAvailable())
+            {
+                await page.DisplayAlert(null, "Нет подключения к сети", "Принять");
+                return;
+            }
+            var api = AntiCounterfeitApiService.getInstance().Api;
+
             // Валидация введенных значений
             if (string.IsNullOrEmpty(ProductName) || string.IsNullOrEmpty(CodeNumber) || string.IsNullOrEmpty(CauseDiscriptionText))
             {
@@ -52,7 +60,6 @@ namespace Anticontrafact2.ViewModels
             };
 
             // Отправка жалобы
-            var api = AntiCounterfeitApiService.getInstance().Api;
             var complaintResult = await api.Complain(data);
             if (!complaintResult.Success)
             {
