@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace Anticontrafact2.ViewModels
@@ -16,12 +17,13 @@ namespace Anticontrafact2.ViewModels
         {
             Reports = new ObservableCollection<Report>();
 
-            LoadReportsCommand = new Command(LoadReports);
-            LoadReports();
+            LoadReportsCommand = new Command(async () => await LoadReports());
+            LoadReportsCommand.Execute(null);
         }
 
-        private async void LoadReports()
+        private async Task LoadReports()
         {
+            IsBusy = true;
             Reports.Clear();
 
             string token = User.GetUser().Token;
@@ -49,28 +51,7 @@ namespace Anticontrafact2.ViewModels
                     });
                 }
             }
-            //int i = 0;
-            //while (i < 3)// Считываем все объекты и задаем для них соответсвующие свойства
-            //{
-            //    Reports.Add(new Report()
-            //    {
-            //        TitleName = i.ToString(),// Название товара\магазина
-            //        Address = i.ToString() + "addr",//Адресс при наличии разумеется
-            //        Number = i.ToString() + i.ToString(),//ИНН или что там в форме
-            //        State = ReportStatus.inProcessing,// Статус заявки
-
-            //        Description = "This is Description"//Описание которое появляется при нажатии на элемент
-            //    });
-            //    i++;
-            //}
-            //Reports.Add(new Report()
-            //{
-            //    TitleName = "Test without adress",
-            //    Number = "77777",
-            //    State = ReportStatus.ready,
-
-            //    Description = "This is Description"
-            //});
+            IsBusy = false;
         }
     }
 }

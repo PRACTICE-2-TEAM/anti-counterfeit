@@ -61,6 +61,8 @@ namespace Anticontrafact2.ViewModels
                 return;
             }
             await page.DisplayAlert(null, "Ваша заявка принята для обработки", "Принять");
+
+            ShopName = AdressText = INNNumber = CauseDiscriptionText = "";
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Anticontrafact2.Models
                 if (State == ReportStatus.inProcessing)
                     return "В обработке";
                 else
-                    return "Рассмотренно";
+                    return "Рассмотрено";
 
             }
         }
