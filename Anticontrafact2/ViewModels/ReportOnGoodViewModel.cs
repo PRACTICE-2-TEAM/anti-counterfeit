@@ -29,6 +29,7 @@ namespace Anticontrafact2.ViewModels
 
         private void ScanCode()
         {
+
         }
 
         private async void SendReport()
@@ -67,6 +68,8 @@ namespace Anticontrafact2.ViewModels
                 return;
             }
             await page.DisplayAlert(null, "Ваша заявка принята для обработки", "Принять");
+
+            ProductName = CodeNumber = CauseDiscriptionText = "";
         }
     }
 }
