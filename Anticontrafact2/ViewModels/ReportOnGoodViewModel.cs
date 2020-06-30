@@ -53,11 +53,11 @@ namespace Anticontrafact2.ViewModels
             var data = new ComplaintOutputData
             {
                 Token = User.GetUser().Token,
-                Description = CauseDiscriptionText,
-                Address = "",
-                Unit = "",
+                Description = "Описание:\n" + CauseDiscriptionText,
+                Address = "", // <-- TODO
+                Unit = "", // <-- TODO
                 Type = "product",
-                Status = "В обработке"
+                Status = "На рассмотрении"
             };
 
             // Отправка жалобы
@@ -67,7 +67,7 @@ namespace Anticontrafact2.ViewModels
                 await page.DisplayAlert(null, complaintResult.Reason, "Принять");
                 return;
             }
-            await page.DisplayAlert(null, "Ваша заявка принята для обработки", "Принять");
+            await page.DisplayAlert(null, "Ваша заявка отправлена на рассмотрение", "Принять");
 
             ProductName = CodeNumber = CauseDiscriptionText = "";
         }

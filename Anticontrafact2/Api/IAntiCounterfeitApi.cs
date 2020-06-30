@@ -27,14 +27,6 @@ namespace Anticontrafact2.Api
         Task<ComplaintInputData> GetComplaintData([AliasAs("token")] string token,
                                              [AliasAs("id")] string id);
 
-        //[Post("/complain_product")]
-        //Task<ComplaintResult> Complain([AliasAs("token")] string token,
-        //                               [AliasAs("text_request")] string description,
-        //                               [AliasAs("adress")] string address,
-        //                               [AliasAs("unit")] string unit,
-        //                               [AliasAs("type")] string type,
-        //                               [AliasAs("status")] string status);
-
         [Post("/complain_product")]
         Task<ComplaintResult> Complain([Body] ComplaintOutputData data);
 

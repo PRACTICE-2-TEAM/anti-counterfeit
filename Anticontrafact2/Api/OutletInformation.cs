@@ -7,10 +7,10 @@ namespace Anticontrafact2.Api
         [JsonProperty("result")]
         public string Result { get; set; }
 
-        [JsonProperty("info")]
+        [JsonProperty("Name")]
         public string Name { get; set; }
 
-        [JsonProperty("address")]
+        [JsonProperty("Address")]
         public string Address { get; set; }
     }
 }

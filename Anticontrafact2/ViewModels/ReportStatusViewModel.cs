@@ -1,10 +1,7 @@
 ﻿using Anticontrafact2.Api;
 using Anticontrafact2.Models;
 using Anticontrafact2.Views;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -12,6 +9,12 @@ namespace Anticontrafact2.ViewModels
 {
     public class ReportStatusViewModel : BaseViewModel
     {
+        /*
+        0JXRgdC70Lgg0LLQsNGBINC30LDRgdGC0LDQstGP0YIg0Y3RgtC+INC/0L
+        XRgNC10LTQtdC70YvQstCw0YLRjCAtINC90LUg0L/QtdGA0LXQtNC10LvR
+        i9Cy0LDQudGC0LUsINC00LXQu9Cw0LnRgtC1INC/0L4g0L3QvtCy0L7QuS
+        wg0YLQsNC6INC60LDQuiDRgtGD0YIg0LLRgdC1INC/0LvQvtGF0L4gPSg= 
+        */
         ReportsStatusPage page;
         public ObservableCollection<Report> Reports { get; set; }
         public Command LoadReportsCommand { get; set; }
@@ -37,7 +40,7 @@ namespace Anticontrafact2.ViewModels
 
             Reports.Clear();
 
-            string token = User.GetUser().Token;
+            var token = User.GetUser().Token;
             var identifiers = await api.GetComplaintIdentifiers(token, 100, 1);
             foreach (var identifier in identifiers)
             {
@@ -45,8 +48,9 @@ namespace Anticontrafact2.ViewModels
                 if (data.Type == "product")
                 {
                     Reports.Add(new Report {
-                        TitleName = "Товар",
-                        State = data.Status == "В обработке" ? ReportStatus.inProcessing : ReportStatus.ready,
+                        TitleName = "Товар\n[" + identifier.Date + "]",
+                        Address = data.Address,
+                        State = data.Status == "На рассмотрении" ? ReportStatus.inProcessing : ReportStatus.ready,
                         Description = data.Description
                     });
                 }
@@ -54,13 +58,14 @@ namespace Anticontrafact2.ViewModels
                 {
                     Reports.Add(new Report
                     {
-                        TitleName = "Торговая точка",
+                        TitleName = "Торговая точка\n[" + identifier.Date + "]",
                         Address = data.Address,
-                        State = data.Status == "В обработке" ? ReportStatus.inProcessing : ReportStatus.ready,
+                        State = data.Status == "На рассмотрении" ? ReportStatus.inProcessing : ReportStatus.ready,
                         Description = data.Description
                     });
                 }
             }
+
             IsBusy = false;
         }
     }

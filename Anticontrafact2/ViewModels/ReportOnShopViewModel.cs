@@ -53,11 +53,11 @@ namespace Anticontrafact2.ViewModels
             var data = new ComplaintOutputData
             {
                 Token = User.GetUser().Token,
-                Description = "ИНН: " + INNNumber + "\n" + CauseDiscriptionText,
+                Description = "Название: " + ShopName + "\nИНН: " + INNNumber + "\nОписание:\n" + CauseDiscriptionText,
                 Address = AdressText,
-                Unit = "",
+                Unit = "", // <-- TODO
                 Type = "sale-point",
-                Status = "В обработке"
+                Status = "На рассмотрении"
             };
 
             // Отправка жалобы
@@ -67,7 +67,7 @@ namespace Anticontrafact2.ViewModels
                 await page.DisplayAlert(null, complaintResult.Reason, "Принять");
                 return;
             }
-            await page.DisplayAlert(null, "Ваша заявка принята для обработки", "Принять");
+            await page.DisplayAlert(null, "Ваша заявка принята на рассмотрение", "Принять");
 
             ShopName = AdressText = INNNumber = CauseDiscriptionText = "";
         }

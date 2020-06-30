@@ -37,7 +37,10 @@ namespace Anticontrafact2.ViewModels
 
             // Проверка
             var outletInfo = await api.GetOutletInformation(INNNumber);
-            await page.DisplayAlert(null, outletInfo.Result, "Принять");
+            var message = outletInfo.Result + "\n\n" +
+                "Название: " + (outletInfo.Name ?? "неизвестно") + "\n" +
+                "Адрес: " + (outletInfo.Address ?? "неизвестно");
+            await page.DisplayAlert(null, message, "Принять");
         }
     }
 }

@@ -40,7 +40,17 @@ namespace Anticontrafact2.ViewModels
 
             // Проверка
             var barcodeInfo = await api.GetProductInformation(CodeNumber);
-            await page.DisplayAlert(null, barcodeInfo.Result, "Принять");
+            var message = barcodeInfo.Result;
+            if (barcodeInfo.Info != null)
+            {
+                message += "\n\n" +
+                    "Страна: " + (barcodeInfo.Info.Country ?? "неизвестно") + "\n" +
+                    "Имя: " + (barcodeInfo.Info.Name ?? "неизвестно") + "\n" +
+                    "Бренд: " + (barcodeInfo.Info.Brand ?? "неизвестно") + "\n" +
+                    "Стоимость единицы: " + (barcodeInfo.Info.UnitValue ?? "неизвестно") + "\n" +
+                    "Изделие: " + (barcodeInfo.Info.Article ?? "неизвестно");
+            }
+            await page.DisplayAlert(null, message, "Принять");
         }
 
         private void ScanCode()

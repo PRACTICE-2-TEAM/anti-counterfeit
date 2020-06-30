@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Anticontrafact2.Api
 {
@@ -8,6 +9,26 @@ namespace Anticontrafact2.Api
         public string Result { get; set; }
 
         [JsonProperty("info")]
-        public string Information { get; set; }
+        public Information Info { get; set; }
+
+        public class Information
+        {
+            [JsonProperty("country")]
+            public string Country;
+
+            [JsonProperty("name")]
+            public string Name;
+
+            [JsonProperty("brend")]
+            public string Brand;
+
+            [JsonProperty("unit_value")]
+            public string UnitValue;
+
+            [JsonProperty("article")]
+            public string Article;
+        }
     }
+
+    
 }
