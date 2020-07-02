@@ -22,7 +22,7 @@
                            VerticalOptions="End"/>
                 <Entry Text="{Binding INNNumber}"
                            Grid.Row="1"/>
-                <Button Command="{Binding IIIISSSSSIIIIICommand}"
+                <Button Command="{Binding ScanCodeCommand}"
                             ImageSource="camera.png"
                             Grid.Column="1"
                             Grid.Row="1"

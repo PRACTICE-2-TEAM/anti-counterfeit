@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Xamarin.Essentials;
+﻿using Xamarin.Forms;
+using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
+using Xamarin.Forms.PlatformConfiguration.AndroidSpecific.AppCompat;
 
 namespace Anticontrafact2.Models
 {

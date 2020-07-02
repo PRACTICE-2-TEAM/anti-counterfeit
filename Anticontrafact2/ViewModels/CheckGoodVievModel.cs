@@ -2,6 +2,8 @@
 using Anticontrafact2.Views;
 using System.Windows.Input;
 using Xamarin.Forms;
+using ZXing;
+using ZXing.Net.Mobile.Forms;
 
 namespace Anticontrafact2.ViewModels
 {
@@ -19,7 +21,18 @@ namespace Anticontrafact2.ViewModels
 
         public ICommand CheckGoodCommand { get; }
         public ICommand ScanCodeCommand { get; }
-        public string CodeNumber { get; set; }
+
+        public string _codeNumber;
+
+        public string CodeNumber
+        {
+            get => _codeNumber;
+            set
+            {
+                _codeNumber = value;
+                OnPropertyChanged(nameof(CodeNumber));
+            }
+        }
 
         private async void CheckGood()
         {
@@ -53,8 +66,28 @@ namespace Anticontrafact2.ViewModels
             await page.DisplayAlert(null, message, "Принять");
         }
 
-        private void ScanCode()
+        /* Сканирование штрих-кода */
+        ZXingScannerPage scannerPage;
+
+        private async void ScanCode()
         {
+            if (scannerPage == null)
+            {
+                scannerPage = new ZXingScannerPage();
+                scannerPage.OnScanResult += ScanPage_OnScanResult;
+            }
+            await page.Navigation.PushAsync(scannerPage);
         }
+
+        private void ScanPage_OnScanResult(Result result)
+        {
+            scannerPage.IsScanning = false;
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                await page.Navigation.PopAsync();
+                CodeNumber = result.Text;
+            });
+        }
+        /**/
     }
 }

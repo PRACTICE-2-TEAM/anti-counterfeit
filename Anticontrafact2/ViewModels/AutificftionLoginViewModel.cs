@@ -3,8 +3,10 @@ using Anticontrafact2.Models;
 using Anticontrafact2.Views;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Anticontrafact2.ViewModels
@@ -27,6 +29,15 @@ namespace Anticontrafact2.ViewModels
         public string UserName { get; set; }
         private async void LogIn()
         {
+            //var props = Application.Current.Properties;
+            //if (props.ContainsKey("__test"))
+            //{
+            //    await page.DisplayAlert(null, props["__test"] as string, "OK");
+            //    return;
+            //}
+            //Application.Current.Properties["__test"] = "test";
+            //return;
+
             // Проверяем доступно ли API
             if (!AntiCounterfeitApiService.getInstance().IsAvailable())
             {

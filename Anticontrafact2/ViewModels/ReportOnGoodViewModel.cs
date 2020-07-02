@@ -3,13 +3,17 @@ using Anticontrafact2.Models;
 using Anticontrafact2.Views;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
+using ZXing;
+using ZXing.Mobile;
+using ZXing.Net.Mobile.Forms;
 
 namespace Anticontrafact2.ViewModels
 {
-    class ReportOnGoodViewModel
+    class ReportOnGoodViewModel : BaseViewModel
     {
         private ReportOnGoodPage page;
         public ReportOnGoodViewModel(ReportOnGoodPage page)
@@ -23,14 +27,63 @@ namespace Anticontrafact2.ViewModels
         public ICommand ScanCodeCommand { get; }
         public ICommand SendReportCommand { get; }
 
-        public string ProductName { get; set; }
-        public string CodeNumber { get; set; }
-        public string CauseDiscriptionText { get; set; }
+        private string _productName;
+        private string _codeNumber;
+        private string _causeDiscriptionText;
 
-        private void ScanCode()
+        public string ProductName
         {
-
+            get => _productName;
+            set
+            {
+                _productName = value;
+                OnPropertyChanged(nameof(ProductName));
+            }
         }
+
+        public string CodeNumber
+        {
+            get => _codeNumber;
+            set
+            {
+                _codeNumber = value;
+                OnPropertyChanged(nameof(CodeNumber));
+            }
+        }
+
+        public string CauseDiscriptionText
+        {
+            get => _causeDiscriptionText;
+            set
+            {
+                _causeDiscriptionText = value;
+                OnPropertyChanged(nameof(CauseDiscriptionText));
+            }
+        }
+
+        /* Сканирование штрих-кода */
+        ZXingScannerPage scannerPage;
+
+        private async void ScanCode()
+        {
+            if (scannerPage == null)
+            {
+                scannerPage = new ZXingScannerPage();
+                scannerPage.OnScanResult += ScanPage_OnScanResult;
+            }
+            await page.Navigation.PushAsync(scannerPage);
+        }
+
+        private void ScanPage_OnScanResult(Result result)
+        {
+            scannerPage.IsScanning = false;
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                await page.Navigation.PopAsync();
+                CodeNumber = result.Text;
+            });
+        }
+        /**/
 
         private async void SendReport()
         {
@@ -69,6 +122,7 @@ namespace Anticontrafact2.ViewModels
             }
             await page.DisplayAlert(null, "Ваша заявка отправлена на рассмотрение", "Принять");
 
+            // Очищаем поля
             ProductName = CodeNumber = CauseDiscriptionText = "";
         }
     }

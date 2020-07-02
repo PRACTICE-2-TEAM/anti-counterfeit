@@ -1,22 +1,40 @@
 ﻿using Anticontrafact2.Api;
 using Anticontrafact2.Views;
+using System;
+using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
+using ZXing;
+using ZXing.Net.Mobile.Forms;
 
 namespace Anticontrafact2.ViewModels
 {
-    class CheckShopViewMode:BaseViewModel
+    class CheckShopViewMode : BaseViewModel
     {
         private CheckShopPage page;
         public CheckShopViewMode(CheckShopPage page)
         {
             this.page = page;
             CheckShopCommand = new Command(CheckShop);
+            ScanCodeCommand = new Command(ScanCode);
         }
 
         public ICommand CheckShopCommand { get; }
-        //TODO Добвавить команду открыть сканер сканера
-        public string INNNumber { get; set; }
+        public ICommand ScanCodeCommand { get; }
+
+        private string _INNNumber;
+
+        public string INNNumber
+        {
+            get => _INNNumber;
+            set
+            {
+                _INNNumber = value;
+                OnPropertyChanged(nameof(INNNumber));
+            }
+        }
 
         private async void CheckShop()
         {
@@ -42,5 +60,37 @@ namespace Anticontrafact2.ViewModels
                 "Адрес: " + (outletInfo.Address ?? "неизвестно");
             await page.DisplayAlert(null, message, "Принять");
         }
+
+        /* Сканирование штрих-кода */
+        ZXingScannerPage scannerPage;
+
+        private async void ScanCode()
+        {
+            if (scannerPage == null)
+            {
+                scannerPage = new ZXingScannerPage();
+                scannerPage.OnScanResult += ScanPage_OnScanResult;
+            }
+            await page.Navigation.PushAsync(scannerPage);
+        }
+
+        private void ScanPage_OnScanResult(Result result)
+        {
+            scannerPage.IsScanning = false;
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                await page.Navigation.PopAsync();
+                try
+                {
+                    var uri = new Uri(result.Text);
+                    await Browser.OpenAsync(uri);
+                }
+                catch
+                {
+                    await page.DisplayAlert(null, "Не удалось получить ИНН\nПожалуйста, введите ИНН в указанное поле вручную", "Принять");
+                }
+            });
+        }
+        /**/
     }
 }
