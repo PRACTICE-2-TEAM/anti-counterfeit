@@ -29,7 +29,7 @@
                             Margin="15,5,0,5"/>
             </Grid>
 
-            <Button Text="Проверть точку"
+            <Button Text="Проверить точку"
                     Command="{Binding CheckShopCommand}"/>
 
         </StackLayout>

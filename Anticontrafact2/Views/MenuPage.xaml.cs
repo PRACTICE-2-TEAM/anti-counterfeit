@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Security.Cryptography.X509Certificates;
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 using Xamarin.Forms.Xaml;
 
 namespace Anticontrafact2.Views
@@ -27,10 +28,12 @@ namespace Anticontrafact2.Views
 
             menuItems = new List<HomeMenuItem>
             {
+                new HomeMenuItem {Id = MenuItemType.MainMenu, Title="Главное меню" },
                 new HomeMenuItem {Id = MenuItemType.CheckGood, Title="Проверить товар" },
                 new HomeMenuItem {Id = MenuItemType.CheckShop, Title="Проверить точку" },
                 new HomeMenuItem {Id = MenuItemType.ReportOnGood, Title="Пожаловаться на товар" },
                 new HomeMenuItem {Id = MenuItemType.ReportOnShop, Title="Пожаловаться на точку" }
+                
             };
 
             ListViewMenu.ItemsSource = menuItems;
@@ -50,6 +53,10 @@ namespace Anticontrafact2.Views
         public void ResetSelectedItem()
         {
             ListViewMenu.SelectedItem = null;
+        }
+        public void ToPage(MenuItemType page)
+        {
+            ListViewMenu.SelectedItem = menuItems[menuItems.IndexOf((e) => e.Id == page)];
         }
 
     }
