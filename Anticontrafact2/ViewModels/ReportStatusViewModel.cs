@@ -48,7 +48,7 @@ namespace Anticontrafact2.ViewModels
                 if (data.Type == "product")
                 {
                     Reports.Add(new Report {
-                        TitleName = "Товар\n[" + identifier.Date + "]",
+                        TitleName = "Товар",
                         Address = data.Address,
                         State = data.Status == "На рассмотрении" ? ReportStatus.inProcessing : ReportStatus.ready,
                         Description = data.Description
@@ -58,7 +58,7 @@ namespace Anticontrafact2.ViewModels
                 {
                     Reports.Add(new Report
                     {
-                        TitleName = "Торговая точка\n[" + identifier.Date + "]",
+                        TitleName = "Торговая точка",
                         Address = data.Address,
                         State = data.Status == "На рассмотрении" ? ReportStatus.inProcessing : ReportStatus.ready,
                         Description = data.Description
