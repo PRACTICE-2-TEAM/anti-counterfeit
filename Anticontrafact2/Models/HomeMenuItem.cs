@@ -10,7 +10,8 @@ namespace Anticontrafact2.Models
         CheckShop,
         ReportOnGood,
         ReportOnShop,
-        ReportsStatus
+        ReportsStatus,
+        MainMenu
 
     }
     public class HomeMenuItem

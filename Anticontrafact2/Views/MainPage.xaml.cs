@@ -15,6 +15,7 @@ namespace Anticontrafact2.Views
     public partial class MainPage : MasterDetailPage
     {
         Dictionary<int, NavigationPage> MenuPages = new Dictionary<int, NavigationPage>();
+        public MenuPage Menu = new MenuPage();
        
         public MainPage()
         {
@@ -22,7 +23,9 @@ namespace Anticontrafact2.Views
 
             MasterBehavior = MasterBehavior.Popover;
 
-            MenuPages.Add((int)MenuItemType.CheckGood, (NavigationPage)Detail);
+            MenuPages.Add((int)MenuItemType.MainMenu, (NavigationPage)Detail);
+
+            Master = Menu;
         }
 
         public async Task NavigateFromMenu(int id)
@@ -45,6 +48,9 @@ namespace Anticontrafact2.Views
                         break;
                     case (int)MenuItemType.ReportsStatus:
                         MenuPages.Add(id, new NavigationPage(new ReportsStatusPage()));
+                        break;
+                    case (int)MenuItemType.MainMenu:
+                        MenuPages.Add(id, new NavigationPage(new FirstPage()));
                         break;
                 }
             }

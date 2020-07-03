@@ -44,7 +44,7 @@ namespace Anticontrafact2.Models
             get
             {
                 if (State == ReportStatus.inProcessing)
-                    return Color.Yellow;
+                    return Color.Orange;
                 else
                     return Color.Green;
             }

@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Anticontrafact2.Views.FirstPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Grid ColumnSpacing="0"
+                  RowSpacing="0"
+                  HeightRequest="60"
+                  Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="4*"/>
+                </Grid.ColumnDefinitions>
+                <Image Source="shoppingSearch.png"
+                       Grid.Column="0"/>
+                <Label Text="Проверить товар"
+                       Grid.Column="1"
+                       HorizontalOptions="Start"
+                       VerticalOptions="Center"
+                       Margin="30,0"/>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="ToCheckGood"></TapGestureRecognizer>
+                </Grid.GestureRecognizers>
+            </Grid>
+            <Grid ColumnSpacing="0"
+                  RowSpacing="0"
+                  HeightRequest="60"
+                  Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="4*"/>
+                </Grid.ColumnDefinitions>
+                <Image Source="homeSearch.png"
+                       Grid.Column="0"/>
+                <Label Text="Проверить торговую точку"
+                       Grid.Column="1"
+                       HorizontalOptions="Start"
+                       VerticalOptions="Center"
+                       Margin="30,0"/>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="ToCheckShop"></TapGestureRecognizer>
+                </Grid.GestureRecognizers>
+            </Grid>
+            <Grid ColumnSpacing="0"
+                  RowSpacing="0"
+                  HeightRequest="60"
+                  Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="4*"/>
+                </Grid.ColumnDefinitions>
+                <Image Source="commentAlert.png"
+                       Grid.Column="0"/>
+                <Label Text="Пожаловаться на товар"
+                       Grid.Column="1"
+                       HorizontalOptions="Start"
+                       VerticalOptions="Center"
+                       Margin="30,0"/>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="ToReportOnGood"></TapGestureRecognizer>
+                </Grid.GestureRecognizers>
+            </Grid>
+            <Grid ColumnSpacing="0"
+                  RowSpacing="0"
+                  HeightRequest="60"
+                  Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="4*"/>
+                </Grid.ColumnDefinitions>
+                <Image Source="homeAlert.png"
+                       Grid.Column="0"/>
+                <Label Text="Пожаловаться на точку"
+                       Grid.Column="1"
+                       HorizontalOptions="Start"
+                       VerticalOptions="Center"
+                       Margin="30,0"/>
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="ToReporOnShop"></TapGestureRecognizer>
+                </Grid.GestureRecognizers>
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

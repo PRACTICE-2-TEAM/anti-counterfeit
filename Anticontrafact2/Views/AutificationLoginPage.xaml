@@ -18,7 +18,7 @@
             </Grid.ColumnDefinitions>
             <StackLayout Style="{StaticResource Key=StackLayoutConteiner}"
                          Grid.ColumnSpan="2">
-                <Label Text="Имя пользователя"/>
+                <Label Text="Email"/>
                 <Entry Text="{Binding UserName}"/>
                 <Label Text="Пароль"/>
                 <Entry IsPassword="True" Text="{Binding Password}"/>
