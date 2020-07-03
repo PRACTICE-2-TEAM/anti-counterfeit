@@ -64,6 +64,8 @@ namespace Anticontrafact2.ViewModels
                     "Изделие: " + (barcodeInfo.Info.Article ?? "неизвестно");
             }
             await page.DisplayAlert(null, message, "Принять");
+
+            CodeNumber = "";
         }
 
         /* Сканирование штрих-кода */

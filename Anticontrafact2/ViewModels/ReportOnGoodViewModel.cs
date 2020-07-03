@@ -1,14 +1,9 @@
 ﻿using Anticontrafact2.Api;
 using Anticontrafact2.Models;
 using Anticontrafact2.Views;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
 using System.Windows.Input;
 using Xamarin.Forms;
 using ZXing;
-using ZXing.Mobile;
 using ZXing.Net.Mobile.Forms;
 
 namespace Anticontrafact2.ViewModels
@@ -106,7 +101,7 @@ namespace Anticontrafact2.ViewModels
             var data = new ComplaintOutputData
             {
                 Token = User.GetUser().Token,
-                Description = "Описание:\n" + CauseDiscriptionText,
+                Description = "Название: " + ProductName + "\nНомер штрих-кода: " + CodeNumber + "\nОписание:\n" + CauseDiscriptionText,
                 Address = "", // <-- TODO
                 Unit = "", // <-- TODO
                 Type = "product",

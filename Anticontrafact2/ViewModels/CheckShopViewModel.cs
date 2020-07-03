@@ -59,6 +59,8 @@ namespace Anticontrafact2.ViewModels
                 "Название: " + (outletInfo.Name ?? "неизвестно") + "\n" +
                 "Адрес: " + (outletInfo.Address ?? "неизвестно");
             await page.DisplayAlert(null, message, "Принять");
+
+            INNNumber = "";
         }
 
         /* Сканирование штрих-кода */
